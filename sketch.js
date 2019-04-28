@@ -28,8 +28,9 @@ let soundfiles = [];
 let outputGif = true;
 let outputSound = false;
 
-var paddleA, paddleB, ball, wallTop, wallBottom;
-var MAX_SPEED = 10;
+var paddleA, paddleB, ball, wallTop, wallBottom, speed;
+var MAX_SPEED = 3;
+let CHANGE_SPEED = 5;
 
 let s1 = function ( sketch ) {
  
@@ -109,8 +110,8 @@ let s1 = function ( sketch ) {
   // Show the results
   sketch.gotResults = function(results) {
     if (results.classIndex < 0) return;
-    sketch.updateConfidence(results.confidences, sketch);
-    sketch. updateGif(results);
+    sketch.updateConfidence(results.confidences);
+    sketch.updateGif(results);
     //updateSound(results);
     if (isPredicting) predictimer = setTimeout(() => sketch.predict(), 50);
   }
@@ -130,10 +131,11 @@ let s1 = function ( sketch ) {
   sketch.updateGif = function(results) {
     // Display different gifs
     if (results.classIndex < 0) return;
-    if (outputSrc !== gifSrcs[results.classIndex]) {
-      outputSrc = gifSrcs[results.classIndex];
-      sketch.select('#output').elt.src = outputSrc;
-    }
+    updateGame(results.classIndex);
+    // if (outputSrc !== gifSrcs[results.classIndex]) {
+    //   outputSrc = gifSrcs[results.classIndex];
+    //   sketch.select('#output').elt.src = outputSrc;
+    // }
   }
   
   sketch.updateExampleCounts = function() {
@@ -154,7 +156,7 @@ let s1 = function ( sketch ) {
       sketch.predict();
     } else {
       clearTimeout(predictimer);
-      resetResult();
+      sketch.resetResult();
     }
   }
 }
@@ -211,13 +213,15 @@ let s2 = function ( sketch ) {
 
   sketch.setup = function() {
     //createCanvas(800, 400);
-    sketch.createCanvas(800, 400).parent("canvasContainerOutput");
+    sketch.createCanvas(320, 240).parent("canvasContainerOutput");
     //frameRate(6);
-  
-    paddleA = sketch.createSprite(30, sketch.height/2, 10, 100);
+    
+    speed = 0;
+
+    paddleA = sketch.createSprite(30, sketch.height/2, 10, 50);
     paddleA.immovable = true;
   
-    paddleB = sketch.createSprite(sketch.width-28, sketch.height/2, 10, 100);
+    paddleB = sketch.createSprite(sketch.width-28, sketch.height/2, 10, 50);
     paddleB.immovable = true;
   
     wallTop = sketch.createSprite(sketch.width/2, -30/2, sketch.width, 30);
@@ -234,11 +238,16 @@ let s2 = function ( sketch ) {
     ball.setSpeed(MAX_SPEED, -180);
   };
   
+  sketch.changePosition = function(speedParam) {
+      speed = speedParam;
+  }
+
   sketch.draw = function() {
     sketch.background(0);
-  
-    paddleA.position.y = sketch.constrain(sketch.mouseY, paddleA.height/2, sketch.height-paddleA.height/2);
-    paddleB.position.y = sketch.constrain(sketch.mouseY, paddleA.height/2, sketch.height-paddleA.height/2);
+    
+    paddleA.position.y += speed;
+    paddleA.position.y = sketch.constrain(paddleA.position.y, paddleA.height/2, sketch.height-paddleA.height/2);
+    paddleB.position.y = sketch.constrain(paddleA.position.y, paddleA.height/2, sketch.height-paddleA.height/2);
   
     ball.bounce(wallTop);
     ball.bounce(wallBottom);
@@ -273,3 +282,12 @@ let s2 = function ( sketch ) {
 
 let inputSketch = new p5(s1);
 let outputSketch = new p5(s2);
+
+function updateGame(classIndex) {
+  if (classIndex === 0){
+    outputSketch.changePosition(CHANGE_SPEED);
+  }
+  else if (classIndex === 1) {
+    outputSketch.changePosition(-CHANGE_SPEED);
+  }  
+}

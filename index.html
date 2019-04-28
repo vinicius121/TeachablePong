@@ -107,7 +107,7 @@
     background: white;
     padding: 15px;
     border-radius: 7px;
-    margin: 20px;
+    margin: 15px;
   }
   .trainbtn-box {
     margin-top: 35px;
@@ -306,8 +306,8 @@
 
 <body>
   <div class="body-container row">
-    <h1 class="center-text">Teachable Machine</h1>
-    <p class="center-text">This is a recreation of Google's <a href="https://teachablemachine.withgoogle.com">Teachable Machines</a> in <a href="https://github.com/ITPNYU/ml5">ml5.js</a>. Get the Code <a href="https://github.com/ml5js/ml5-website/tree/source/website/static/demos/teachableMachine">here</a> </p>
+    <h1 class="center-text">Teachable Pong</h1>
+    <p class="center-text">This is inspired by Google's <a href="https://teachablemachine.withgoogle.com">Teachable Machines</a> and was created using <a href="https://github.com/ITPNYU/ml5">ml5.js</a> and <a href="https://p5js.org/">p5.js</a>. Get the Code <a href="https://github.com/vinicius121/TeachablePong">here</a> </p>
     <div class="input-container white-box col-3">
       <h3 class="title">INPUT</h3>
       <div id="canvasContainerInput" class="center-container"></div>
@@ -355,31 +355,14 @@
               <button id="buttonB" class="train-button">TRAIN PURPLE</button>
             </div>
           </div>
-
-          <div class="pink-color">
-            <div class="confidence-box">
-              <div>CONFIDENCE</div>
-              <div class="progress" id="progress2">
-                <span class="progress-text" id="progress-textC"></span>
-                <div class="progress-bar" id="progress-barC"></div>
-              </div>
-            </div>
-
-            <div class="exampereset-container">
-              <span id="exampleC">0 EXAMPLES</span>
-              <button id="resetC">RESET</button>
-            </div>
-        </div>
       </div>
     </div>
-
+  </div>
     <div class="white-box output-container col-3">
       <h3 class="title">OUTPUT</h3>
       <div id="canvasContainerOutput" class="center-container"></div>
 
       <div id="gif-output">
-        <div class="center-container"><img id="output" src="default.png" /></div>
-
         <div class="gif-container">
           <div class="container" id="containerA">
             <img class="image" id="imgA" src="uparrow.png" />
